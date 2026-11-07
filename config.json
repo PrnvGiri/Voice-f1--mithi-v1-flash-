@@ -1,0 +1,53 @@
+{
+  "name": "mithi-v1-flash",
+  "version": "1.0.0",
+  "sample_rate": 24000,
+  "languages": [
+    "hi",
+    "en",
+    "bn",
+    "gu",
+    "kn",
+    "ml",
+    "mr",
+    "or",
+    "pa",
+    "ta",
+    "te"
+  ],
+  "voices": [
+    "satvik",
+    "charvi"
+  ],
+  "weights_dtype": "bfloat16",
+  "compute_dtype": "float32",
+  "components": {
+    "indic_encoder": {
+      "file": "indic_encoder/model.safetensors",
+      "params": 21312896,
+      "source": "ai4bharat/indic-bert, word table trimmed"
+    },
+    "prosody_writer": {
+      "file": "writer.safetensors",
+      "params": 18843180,
+      "source": "writer v2, GRPO step 2400"
+    },
+    "kokoro_decoder": {
+      "file": "decoder.safetensors",
+      "params": 58919986,
+      "source": "Kokoro-82M text encoder + iSTFTNet decoder, fine-tuned step 62000"
+    },
+    "voices": {
+      "file": "voices.safetensors"
+    }
+  },
+  "inference": {
+    "writer_temp": 0.7,
+    "writer_top_p": 1.0,
+    "voicing_temp": 0.0,
+    "edge_max": 2,
+    "pitch_shift": 0.6,
+    "seed": 0,
+    "max_phonemes_per_piece": 400
+  }
+}
