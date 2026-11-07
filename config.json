@@ -20,7 +20,6 @@
     "charvi"
   ],
   "weights_dtype": "bfloat16",
-  "compute_dtype": "float32",
   "components": {
     "indic_encoder": {
       "file": "indic_encoder/model.safetensors",

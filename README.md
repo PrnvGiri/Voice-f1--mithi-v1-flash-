@@ -31,8 +31,46 @@ A small text-to-speech model for 11 Indian languages, with two voices: **Satvik*
 
 - **Languages:** Hindi, English, Bengali, Gujarati, Kannada, Malayalam, Marathi, Odia, Punjabi, Tamil, Telugu.
 - **Size:** 99.1 M parameters, 197 MB.
-- **Weights:** bf16 safetensors. Load them into fp32 and compute in fp32.
+- **Weights:** bf16 safetensors.
 - **Output:** 24 kHz mono audio.
+
+## Quick start
+
+**1. Download the model and install the dependencies** (Python 3.10 or newer):
+
+```bash
+pip install -U huggingface_hub
+hf download Oomni/mithi-v1-flash --local-dir mithi-v1-flash
+cd mithi-v1-flash
+pip install -r requirements.txt
+python -m spacy download en_core_web_sm
+```
+
+espeak-ng comes with the `espeakng-loader` package, so no system install is needed. A GPU is used if there is one; the model also runs on CPU.
+
+**2. Run it from the command line:**
+
+```bash
+python inference.py --lang hi --voice charvi --text "आज मौसम कितना अच्छा है! चलो, शाम को कहीं बाहर घूमने चलते हैं।" --out hindi.wav
+python inference.py --lang en --voice satvik --text "Your appointment is confirmed for Monday at 10:30 AM." --out english.wav
+```
+
+**3. Or from Python**, inside the `mithi-v1-flash` folder:
+
+```python
+from mithi_tts import Mithi
+
+tts = Mithi(".")                                   # the downloaded model folder
+audio = tts.synthesize("नमस्ते! आप कैसे हैं?", lang="hi", voice="satvik")
+tts.save(audio, "namaste.wav")                     # 24 kHz WAV
+
+for lang, text in [("ta", "வணக்கம்! எப்படி இருக்கீங்க?"), ("bn", "নমস্কার! কেমন আছেন?")]:
+    tts.save(tts.synthesize(text, lang=lang, voice="charvi"), f"hello_{lang}.wav")
+```
+
+Languages: `hi` Hindi · `en` English · `bn` Bengali · `gu` Gujarati · `kn` Kannada · `ml` Malayalam · `mr` Marathi · `or` Odia · `pa` Punjabi · `ta` Tamil · `te` Telugu
+
+Voices: `satvik` (male) and `charvi` (female). Long text is read sentence by sentence automatically.
 
 ## Voices
 
@@ -114,12 +152,13 @@ These are in `config.json`, field `inference`:
 | Random seed | 0 for every sentence (same text, same audio) |
 | Long text | read sentence by sentence, joined with 0.15 s of silence |
 
-Weights are stored in bf16. Load them into fp32 and compute in fp32: bf16 arithmetic in the decoder adds audible noise.
-
 ## Files
 
 | File | Contents |
 |---|---|
+| `inference.py` | command-line script: text in, WAV out |
+| `mithi_tts/` | the Python package that runs the model |
+| `requirements.txt` | Python dependencies |
 | `config.json` | languages, voices, inference settings |
 | `decoder.safetensors`, `kokoro_config.json` | Kokoro text encoder and iSTFTNet decoder |
 | `writer.safetensors` | prosody writer |
@@ -135,7 +174,6 @@ Weights are stored in bf16. Load them into fp32 and compute in fp32: bf16 arithm
 - **Pronunciation** depends on espeak-ng / misaki: a word the G2P gets wrong is spoken wrong.
 - **Numbers, dates, currency, URLs** are read only as well as the text normaliser expands them.
 - **Long text** is read sentence by sentence; each sentence's prosody is written without seeing the others.
-- **fp32 arithmetic only.** Only the stored weights are bf16.
 - **No published evaluation** yet: no automated scores and no human listening study (MOS).
 
 ## Acknowledgements
