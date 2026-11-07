@@ -30,6 +30,15 @@ A small text-to-speech model for 11 Indian languages, with two voices: **Satvik*
 - **Weights:** bf16 safetensors. Load them into fp32 and compute in fp32.
 - **Output:** 24 kHz mono audio.
 
+## Voices
+
+One male and one female speaker. Their training speech was generated with Maya2-native inference.
+
+| Voice | Speaker |
+|---|---|
+| **Satvik** | Male |
+| **Charvi** | Female |
+
 ## Model
 
 ```
