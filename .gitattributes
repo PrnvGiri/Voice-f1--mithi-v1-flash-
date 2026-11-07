@@ -77,3 +77,4 @@ samples/te_conversational_charvi.wav filter=lfs diff=lfs merge=lfs -text
 samples/te_conversational_satvik.wav filter=lfs diff=lfs merge=lfs -text
 samples/te_news_charvi.wav filter=lfs diff=lfs merge=lfs -text
 samples/te_news_satvik.wav filter=lfs diff=lfs merge=lfs -text
+assets/mithi_banner.png filter=lfs diff=lfs merge=lfs -text

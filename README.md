@@ -21,6 +21,10 @@ tags:
   - bf16
 ---
 
+<p align="center">
+  <img src="https://huggingface.co/Oomni/mithi-v1-flash/resolve/main/assets/mithi_banner.png" alt="Mithi: sweet, natural speech in 11 Indian languages" width="100%">
+</p>
+
 # Mithi v1 Flash
 
 A small text-to-speech model for 11 Indian languages, with two voices: **Satvik** (male) and **Charvi** (female).
@@ -122,6 +126,7 @@ Weights are stored in bf16. Load them into fp32 and compute in fp32: bf16 arithm
 | `voices.safetensors` | Satvik and Charvi |
 | `indic_encoder/` | indic-bert |
 | `samples/` | the example clips above and their text |
+| `assets/` | banner and wordmark |
 
 ## Limitations
 
