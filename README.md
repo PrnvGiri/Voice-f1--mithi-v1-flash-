@@ -68,6 +68,32 @@ for lang, text in [("ta", "வணக்கம்! எப்படி இரு�
     tts.save(tts.synthesize(text, lang=lang, voice="charvi"), f"hello_{lang}.wav")
 ```
 
+**4. Run on CPU** (laptops, Raspberry Pi, phones, servers without a GPU):
+
+```bash
+python inference.py --device cpu --threads 4 --lang hi --voice charvi --text "आज मौसम कितना अच्छा है! चलो, शाम को कहीं बाहर घूमने चलते हैं।" --out hindi_cpu.wav
+```
+
+`--threads` sets how many CPU cores to use; without it PyTorch uses all of them. From Python:
+
+```python
+import torch
+torch.set_num_threads(4)
+
+from mithi_tts import Mithi
+tts = Mithi(".", device="cpu")
+tts.save(tts.synthesize("नमस्ते! आप कैसे हैं?", lang="hi", voice="charvi"), "namaste_cpu.wav")
+```
+
+Measured speed for an average 15-word sentence (about 7 s of speech), on a server CPU (AMD EPYC 9554):
+
+| CPU threads | Time per sentence |
+|---|---|
+| 1 | ~8 s |
+| 4 | ~3 s |
+
+Slower CPUs, such as a Raspberry Pi, take proportionally longer.
+
 Languages: `hi` Hindi · `en` English · `bn` Bengali · `gu` Gujarati · `kn` Kannada · `ml` Malayalam · `mr` Marathi · `or` Odia · `pa` Punjabi · `ta` Tamil · `te` Telugu
 
 Voices: `satvik` (male) and `charvi` (female). Long text is read sentence by sentence automatically.
