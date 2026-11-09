@@ -39,7 +39,7 @@ A small text-to-speech model for 11 Indian languages, with two voices: **Satvik*
 
 Mithi is released under the **Apache License 2.0** (see `LICENSE`). It is **free to use**, for personal, research and
 commercial projects alike: you can use, modify and redistribute the model and code, and build products on it. Keep the
-license and the credits above with any copy you share.
+license and the credits (see [Acknowledgements](#acknowledgements)) with any copy you share.
 
 Mithi was built entirely on open-source models and tools:
 
