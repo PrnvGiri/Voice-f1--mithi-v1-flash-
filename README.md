@@ -33,6 +33,7 @@ A small text-to-speech model for 11 Indian languages, with two voices: **Satvik*
 - **Size:** 99.1 M parameters, 197 MB.
 - **Weights:** bf16 safetensors.
 - **Output:** 24 kHz mono audio.
+- **Licence:** Apache-2.0, free to use, including commercially. See [Licence](#licence).
 
 ## Quick start
 
@@ -208,3 +209,22 @@ These are in `config.json`, field `inference`:
 - **Kokoro-82M** text encoder and iSTFTNet decoder: [hexgrad/kokoro](https://github.com/hexgrad/kokoro), Apache-2.0.
 - **indic-bert:** [ai4bharat/indic-bert](https://huggingface.co/ai4bharat/indic-bert), MIT.
 - **G2P:** [misaki](https://github.com/hexgrad/misaki) and espeak-ng.
+
+## Licence
+
+Mithi is released under the **Apache License 2.0** (see `LICENSE`). It is **free to use**, for personal, research and
+commercial projects alike: you can use, modify and redistribute the model and code, and build products on it. Keep the
+licence and the credits above with any copy you share.
+
+Mithi was built entirely on open-source models and tools:
+
+| Component | Licence |
+|---|---|
+| Maya2-native (training speech) | Apache-2.0 |
+| Kokoro-82M (text encoder and decoder) | Apache-2.0 |
+| indic-bert (word meaning) | MIT |
+| Maya text normaliser (bundled in `mithi_tts/text_norm/`) | Apache-2.0 |
+| misaki (G2P) | Apache-2.0 |
+
+Packages installed through `requirements.txt` keep their own licences.
+
