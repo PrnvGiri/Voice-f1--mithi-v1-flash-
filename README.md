@@ -17,7 +17,6 @@ tags:
   - text-to-speech
   - tts
   - indic
-  - kokoro
   - bf16
 ---
 
@@ -41,15 +40,15 @@ Mithi is released under the **Apache License 2.0** (see `LICENSE`). It is **free
 commercial projects alike: you can use, modify and redistribute the model and code, and build products on it. Keep the
 license and the credits (see [Acknowledgements](#acknowledgements)) with any copy you share.
 
-Mithi was built entirely on open-source models and tools:
+Mithi was built entirely on open-source models and tools, each under a permissive license:
 
 | Component | License |
 |---|---|
-| Maya2-native (training speech) | Apache-2.0 |
-| Kokoro-82M (text encoder and decoder) | Apache-2.0 |
-| indic-bert (word meaning) | MIT |
-| Maya text normaliser (bundled in `mithi_tts/text_norm/`) | Apache-2.0 |
-| misaki (G2P) | Apache-2.0 |
+| Maya2-native | Apache-2.0 |
+| Kokoro-82M | Apache-2.0 |
+| indic-bert | MIT |
+| Maya text normaliser | Apache-2.0 |
+| misaki | Apache-2.0 |
 
 Packages installed through `requirements.txt` keep their own licenses.
 
@@ -119,7 +118,7 @@ Voices: `satvik` (male) and `charvi` (female). Long text is read sentence by sen
 
 ## Voices
 
-One male and one female speaker. Their training speech was generated with [Maya2-native](https://huggingface.co/maya-research/maya2-native) inference.
+One male and one female voice.
 
 | Voice | Speaker |
 |---|---|
@@ -165,38 +164,6 @@ The text is shown as typed; numbers, times and currency are expanded into words 
 
 All clips and their text (`samples/sentences.tsv`) are in the [`samples/`](https://huggingface.co/Oomni/mithi-v1-flash/tree/main/samples) folder.
 
-## Model
-
-```
-text
- └─ text normaliser               numbers, dates, currency, URLs ... → words
- └─ espeak-ng / misaki G2P        → phonemes
- └─ indic-bert                    one meaning vector per word
- └─ prosody writer                per phoneme: duration, voicing, pitch, loudness, breaths
- └─ Kokoro text encoder + iSTFTNet decoder → 24 kHz audio
-```
-
-| Component | Parameters |
-|---|---|
-| indic-bert (ALBERT, word table trimmed to our languages) | 21.3 M |
-| Prosody writer (Transformer reader + autoregressive writer) | 18.8 M |
-| Kokoro text encoder + iSTFTNet decoder (fine-tuned) | 58.9 M |
-
-The prosody writer reads the sentence and writes its prosody one phoneme at a time: how long each sound lasts, its pitch contour, its loudness, and where to breathe. The Kokoro decoder turns that prosody into audio in the chosen voice.
-
-## Inference settings
-
-These are in `config.json`, field `inference`:
-
-| Setting | Value |
-|---|---|
-| Writer temperature, top-p | 0.7, 1.0 |
-| Voicing | greedy (temperature 0) |
-| Silence at each end | at most 50 ms |
-| Pitch shift | +0.6 semitone |
-| Random seed | 0 for every sentence (same text, same audio) |
-| Long text | read sentence by sentence, joined with 0.15 s of silence |
-
 ## Files
 
 | File | Contents |
@@ -204,26 +171,23 @@ These are in `config.json`, field `inference`:
 | `inference.py` | command-line script: text in, WAV out |
 | `mithi_tts/` | the Python package that runs the model |
 | `requirements.txt` | Python dependencies |
-| `config.json` | languages, voices, inference settings |
-| `decoder.safetensors`, `kokoro_config.json` | Kokoro text encoder and iSTFTNet decoder |
-| `writer.safetensors` | prosody writer |
-| `voices.safetensors` | Satvik and Charvi |
-| `indic_encoder/` | indic-bert |
+| `config.json` | languages, voices and settings |
+| `*.safetensors`, `kokoro_config.json`, `indic_encoder/` | model weights and configuration |
 | `samples/` | the example clips above and their text |
 | `assets/` | banner and wordmark |
 
 ## Limitations
 
-- **Less expressive than Maya2-native.** Intonation and emotion are flatter than in the speech it learned from.
+- **Expressiveness:** intonation and emotion are flatter than in natural human speech.
 - **Kannada, Malayalam, Marathi, Odia:** speech can come out a little faster than natural.
-- **Pronunciation** depends on espeak-ng / misaki: a word the G2P gets wrong is spoken wrong.
+- **Pronunciation:** some words, especially rare names and loanwords, can be mispronounced.
 - **Numbers, dates, currency, URLs** are read only as well as the text normaliser expands them.
-- **Long text** is read sentence by sentence; each sentence's prosody is written without seeing the others.
+- **Long text** is read sentence by sentence; each sentence is spoken without seeing the others.
 - **No published evaluation** yet: no automated scores and no human listening study (MOS).
 
 ## Acknowledgements
 
-- **[Maya2-native](https://huggingface.co/maya-research/maya2-native)** by Maya Research (Apache-2.0): the training speech for the Satvik and Charvi voices was generated with it.
-- **Kokoro-82M** text encoder and iSTFTNet decoder: [hexgrad/kokoro](https://github.com/hexgrad/kokoro), Apache-2.0.
+- **[Maya2-native](https://huggingface.co/maya-research/maya2-native)** by Maya Research, Apache-2.0.
+- **Kokoro-82M:** [hexgrad/kokoro](https://github.com/hexgrad/kokoro), Apache-2.0.
 - **indic-bert:** [ai4bharat/indic-bert](https://huggingface.co/ai4bharat/indic-bert), MIT.
-- **G2P:** [misaki](https://github.com/hexgrad/misaki) and espeak-ng.
+- **[misaki](https://github.com/hexgrad/misaki)** and **espeak-ng**.
