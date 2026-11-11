@@ -34,6 +34,10 @@ A small text-to-speech model for 11 Indian languages, with two voices: **Satvik*
 - **Output:** 24 kHz mono audio.
 - **License:** Apache-2.0, free to use, including commercially. See [License](#license).
 
+## Demo
+
+<video controls preload="metadata" width="100%" src="https://huggingface.co/Oomni/mithi-v1-flash/resolve/main/assets/mithi_v1_flash_showcase.mp4"></video>
+
 ## License
 
 Mithi is released under the **Apache License 2.0** (see `LICENSE`). It is **free to use**, for personal, research and
